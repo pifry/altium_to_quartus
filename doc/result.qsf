@@ -1,0 +1,7 @@
+set_location_assignment PIN_AF1 -to "sensor_rx[24](n)"
+set_location_assignment PIN_AE1 -to sensor_rx[25]
+set_location_assignment PIN_AF2 -to "sensor_rx[25](n)"
+set_location_assignment PIN_AC6 -to sensor_rx[26]
+set_location_assignment PIN_AC7 -to "sensor_rx[26](n)"
+set_location_assignment PIN_AC5 -to sensor_rx[27]
+set_location_assignment PIN_AB4 -to "sensor_rx[27](n)"
