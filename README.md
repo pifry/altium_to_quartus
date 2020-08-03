@@ -1,13 +1,13 @@
 Altium to Quartus netlist converter
 ===================================
 
-The tool is made as a part of an atomatic toolchain linking Altium Designer project to Quartus Prime project. The goal is to convert netlist names connected to FPGA in Altium Designer to Quartus Pin declaration in qsf file.
+The tool is made as a part of an atomatic toolchain linking [Altium Designer](https://www.altium.com/) project to [Quartus Prime](https://www.intel.pl/content/www/pl/pl/software/programmable/quartus-prime/overview.html) project. The goal is to convert netlist names connected to FPGA in Altium Designer to Quartus Pin declaration in qsf file.
 
 ## Usage:
 
 `altium_to_quartus -u U3 -o result.qsf input.net` 
 
-This should generate new result.qsf from input.net file. Every line from input.net, that looks like this:
+This should generate new result.qsf from input.net file. For the lines from input.net, that looks like this:
 
 ```
 NODENAME LVDS_TOP_DATA.30_P$
@@ -16,14 +16,14 @@ NODENAME LVDS_TOP_DATA.30_N$
     J1        79  U3      AH21
 ```
 
-should be converted into the line:
+the lines below shoud be generated:
 
 ```
 set_location_assignment PIN_AH22 -to "LVDS_TOP_DATA[30]"
 set_location_assignment PIN_AH21 -to "LVDS_TOP_DATA[30](n)"
 ```
 
-in qsf file. Only lines with U3 should be considered. 
+in qsf file. Only lines with U3 should be considered as specyfied in `-u U3` parameter. 
 
 The program shoud check whether every line in source file that ends with _P have a line with the same name ending with _N. If not it shoud return non zero result, print missing nets and do not generate any output files.
 
