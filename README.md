@@ -1,7 +1,7 @@
 Altium to Quartus netlist converter
 ===================================
 
-The tool is made as an part of atomatic toolchain linking Altium Designer project to Quartus Prime project. The goal is to convert netlist names connected to FPGA in Altium Designer to Quartus Pin declaration in qsf file.
+The tool is made as a part of an atomatic toolchain linking Altium Designer project to Quartus Prime project. The goal is to convert netlist names connected to FPGA in Altium Designer to Quartus Pin declaration in qsf file.
 
 ## Usage:
 
