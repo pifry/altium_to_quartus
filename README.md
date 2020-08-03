@@ -42,7 +42,7 @@ set_location_assignment PIN_F1 -to "NO_BUS_NAME(n)"
 
 ## Netlist File:
 
-The netlist file shoud be generated from Altium Designer using `File->Export->Netlist Schematic` and then selecting `Cadentix Netlist` as a netlist format. There are example [Netlist File](./docs/input.net) and [Quartus File](./docs/result.qsf) for reference.
+The netlist file shoud be generated from Altium Designer using `File->Export->Netlist Schematic` and then selecting `Cadentix Netlist` as a netlist format. There are example [Netlist File](doc/input.net) and [Quartus File](doc/result.qsf) for reference.
 
 ## Quartus File:
 
