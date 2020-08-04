@@ -40,6 +40,8 @@ should be converted into the line:
 set_location_assignment PIN_F1 -to "NO_BUS_NAME(n)"
 ```
 
+If the `-o <output_file_name>` is not specyfied, the output file shoud take name after input file
+
 ## Netlist File:
 
 The netlist file shoud be generated from Altium Designer using `File->Export->Netlist Schematic` and then selecting `Cadentix Netlist` as a netlist format. There are example [Netlist File](doc/input.net) and [Quartus File](doc/result.qsf) for reference.
