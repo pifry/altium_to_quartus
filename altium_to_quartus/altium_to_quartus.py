@@ -1,5 +1,8 @@
+import sys
+
 def parse_args(*args):
-    return (0, 0, 0)
+    input_name = args[-1]
+    return (input_name, 0, 0)
 
 if __name__ == '__main__':
-    print("Hello world!")
+    input_file_name, output_file_name, ref_des = parse_args(*sys.argv)
