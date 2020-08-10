@@ -3,17 +3,6 @@ import argparse
 from collections import defaultdict
 
 
-def quartus_file_generator(input_file, u, output_file):
-    # transform input file into nested dicts
-    dct = input_to_dict(input_file)
-    # checking corresponding lines
-    corresponding_line_checker(dct)
-    # generating output file
-    ref_des_writer(dct, u, output_file)
-    
-
-
-
 def input_to_dict(input_file):    
     with open(input_file, "r") as reader:
         big_dct = defaultdict(dict)
@@ -97,19 +86,24 @@ def extract_net_name(net_name):
     return result
 
 
-def Main():
-    args = parse_arguments()
-    quartus_file_generator(args.input_file, args.u, args.output)
-
-
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", help="reference designator", default="U1")
-    parser.add_argument("-o", "--output", help="output result to a file", default = "result.qsf")
+    parser.add_argument("-o", "--output", help="output result to a file", default="result.qsf")
     parser.add_argument("input_file", help="input file")
 
     args = parser.parse_args()
+    if args.output == "result.qsf":
+        args.output = args.input_file.split(".")[0]+".qsf"
+
     return args
+
+
+def Main():
+    args = parse_arguments()
+    dct = input_to_dict(args.input_file)
+    corresponding_line_checker(dct)
+    ref_des_writer(dct, args.u, args.output)
 
     
 if __name__ == '__main__':
