@@ -1,31 +1,25 @@
-from altium_to_quartus import parse_args
+import sys
+import unittest
+from unittest.mock import patch
+from parameterized import parameterized
+from altium_to_quartus import parse_arguments
 
-def test_default_args():
-    input_file_name, output_file_name, ref_des = parse_args('program_name', 'input_name.net')
-    assert input_file_name == 'input_name.net'
-    assert output_file_name == 'input_name.qsf'
-    assert ref_des == 'U1'
+class TestInputArgs(unittest.TestCase):
 
-def test_specyfic_ref_des():
-    input_file_name, output_file_name, ref_des = parse_args('program_name', '-u', 'U7', 'input_name.net')
-    assert input_file_name == 'input_name.net'
-    assert output_file_name == 'input_name.qsf'
-    assert ref_des == 'U7'
+    @parameterized.expand([
+        (['app_name', '-u', 'U3', '-o', 'output.qsv', 'input.net'], 'input.net', 'output.qsv', 'U3'),
+        (['app_name', '-o', 'output.qsv', '-u', 'U3', 'input.net'], 'input.net', 'output.qsv', 'U3'),
+        (['app_name', 'input.net'], 'input.net', 'input.qsv', 'U1'),
+        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsv', 'U3'),
+        (['app_name', '-o', 'output.qsv', 'input.net'], 'input.net', 'output.qsv', 'U1'),
+    ])
+    def test_args_parser(self, test_args, input_name, output_name, refdes):
+        with patch.object(sys, 'argv', test_args):
+            args = parse_arguments()
+            self.assertEquals(args.input_file, input_name)
+            self.assertEquals(args.output, output_name)
+            self.assertEquals(args.u, refdes)
 
-def test_specyfic_output_filename():
-    input_file_name, output_file_name, ref_des = parse_args('program_name', '-o', 'output_name.sqf', 'input_name.net')
-    assert input_file_name == 'input_name.net'
-    assert output_file_name == 'output_name.sqf'
-    assert ref_des == 'U1'
 
-def test_specyfic_ref_des_and_output_name():
-    input_file_name, output_file_name, ref_des = parse_args('program_name', '-u', 'U9', '-o', 'output_name.sqf', 'input_name.net')
-    assert input_file_name == 'input_name.net'
-    assert output_file_name == 'output_name.sqf'
-    assert ref_des == 'U9'
-
-def test_specyfic_ref_des_and_output_name_reversed():
-    input_file_name, output_file_name, ref_des = parse_args('program_name', '-o', 'output_name.sqf', '-u', 'U9', 'input_name.net')
-    assert input_file_name == 'input_name.net'
-    assert output_file_name == 'output_name.sqf'
-    assert ref_des == 'U9'
+if __name__ == "__main__":
+    unittest.main()
