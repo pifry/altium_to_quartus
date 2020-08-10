@@ -39,11 +39,14 @@ def input_to_dict(input_file):
 
 
 def corresponding_line_checker(dct):
+    count = 0
     for net, small_dct in dct.items():
         if not "_" in small_dct.keys():
             if not "_P" in small_dct.keys() or not "_N" in small_dct.keys():
+                count += 1
                 print(f"Net {net} belongs to a differential pair but has no corresponding negative or positive counterpart.")
-                sys.exit(1)
+    if count !=0:
+        sys.exit(1)
 
 
 def ref_des_writer(dct, u, output_file):
