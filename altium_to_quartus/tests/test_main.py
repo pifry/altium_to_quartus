@@ -7,11 +7,11 @@ from altium_to_quartus import parse_arguments
 class TestInputArgs(unittest.TestCase):
 
     @parameterized.expand([
-        (['app_name', '-u', 'U3', '-o', 'output.qsv', 'input.net'], 'input.net', 'output.qsv', 'U3'),
-        (['app_name', '-o', 'output.qsv', '-u', 'U3', 'input.net'], 'input.net', 'output.qsv', 'U3'),
-        (['app_name', 'input.net'], 'input.net', 'input.qsv', 'U1'),
-        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsv', 'U3'),
-        (['app_name', '-o', 'output.qsv', 'input.net'], 'input.net', 'output.qsv', 'U1'),
+        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U3'),
+        (['app_name', '-o', 'output.qsf', '-u', 'U3', 'input.net'], 'input.net', 'output.qsf', 'U3'),
+        (['app_name', 'input.net'], 'input.net', 'input.qsf', 'U1'),
+        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsf', 'U3'),
+        (['app_name', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U1'),
     ])
     def test_args_parser(self, test_args, input_name, output_name, refdes):
         with patch.object(sys, 'argv', test_args):
