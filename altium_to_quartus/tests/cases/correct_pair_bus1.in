@@ -1,0 +1,16 @@
+NODENAME DATA.0_P$
+    J2        72  U3       A1
+NODENAME DATA.0_N$
+    J2        72  U3       A2
+NODENAME DATA.1_P$
+    J2        70  U3       A3
+NODENAME DATA.1_N$
+    J2        70  U3       A4
+NODENAME DATA.2_P$
+    J2        72  U3       A5
+NODENAME DATA.2_N$
+    J2        72  U3       A6
+NODENAME DATA.3_P$
+    J2        70  U3       A7
+NODENAME DATA.3_N$
+    J2        70  U3       A8
