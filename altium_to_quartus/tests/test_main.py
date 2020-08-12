@@ -24,20 +24,20 @@ class TestInputArgs(unittest.TestCase):
             self.assertEquals(ref_des, refdes)
 
 
-def files_provider(path):
+def files_provider(path, prefix):
     filenames = list()
     for _ , _ , names in walk(path):
         filenames.extend(names)
         break
 
     for filename in filenames:
-        if filename.startswith('correct_') and filename.endswith('.in'):
+        if filename.startswith(prefix) and filename.endswith('.in'):
             yield (filename, path)
 
 class TestFunctionality(unittest.TestCase):
 
-    @parameterized.expand(files_provider('tests/cases/'))
-    def test_case(self, *params):
+    @parameterized.expand(files_provider('tests/cases/', 'correct_'))
+    def test_correct_cases(self, *params):
         input_filename, path = params
         expected_filename = input_filename[:-3] + '.out'
         input_path = join(path, input_filename)
@@ -45,6 +45,16 @@ class TestFunctionality(unittest.TestCase):
 
         with open(input_path) as input_data, open (expected_path) as expected_data:
             self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3'))), expected_data.read())
+        
+    @parameterized.expand(files_provider('tests/cases/', 'incorrect_'))
+    def test_incorrect_cases(self, *params):
+        input_filename, path = params
+        input_path = join(path, input_filename)
+
+        with open(input_path) as input_data:
+            with self.assertRaises(SystemExit) as cm:
+                list(a_to_q(input_data, 'U3'))
+            self.assertEqual(cm.exception.code, 1)
 
 
 if __name__ == "__main__":
