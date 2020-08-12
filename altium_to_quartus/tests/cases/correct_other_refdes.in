@@ -1,0 +1,7 @@
+NODENAME SIMPLE_NET_A$
+    J3        53  J124      AA23
+NODENAME SIMPLE_NET_B$
+    J3        53  U3      AA23
+NODENAME SIMPLE_NET_C$
+    J3        53  U4      AA23
+
