@@ -1,6 +1,6 @@
-Altium to Quartus netlist converter
+Altium to Quartus netlist converter  
 ===================================
-
+![tests](https://github.com/pifry/altium_to_quartus/workflows/Python%20application/badge.svg)
 The tool is made as a part of an atomatic toolchain linking [Altium Designer](https://www.altium.com/) project to [Quartus Prime](https://www.intel.pl/content/www/pl/pl/software/programmable/quartus-prime/overview.html) project. The goal is to convert netlist names connected to FPGA in Altium Designer to Quartus Pin declaration in qsf file.
 
 ## Usage:
