@@ -1,14 +1,13 @@
 import argparse
 
 def parse_arguments():
-    class Ret:
-        def __init__(self):
-            self.input_file = ""
-            self.output = ""
-            self.u = ""
-    return Ret()
+    # Implement function here and return values according 
+    # to the following example:
+    return ('input.net', 'output.qsf', 'U3')
 
 def a_to_q(input_data, ref_des):
+    # Following implementation is a fake whose sole purpose 
+    # is to channel data from input to output.
     content = list()
     for line in input_data:
         content.append(line)
@@ -17,10 +16,9 @@ def a_to_q(input_data, ref_des):
         yield line
 
 if __name__ == '__main__':
-    parse_arguments()
+    input_file_path, output_file_path, ref_des = parse_arguments()
 
-    input_data = ['pierwszy\n', 'drugi\n', 'trzeci\n']
-    with open('tmp.txt','w') as f:
-        for line in a_to_q(input_data, 'U3'):
-            f.write(line)
+    with open(input_file_path, 'r') as input_file, open(output_file_path,'w') as output_file:
+        for line in a_to_q(input_file, ref_des):
+            output_file.write(line)
     
