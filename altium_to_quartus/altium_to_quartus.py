@@ -2,9 +2,9 @@ import sys
 import argparse
 from collections import defaultdict
 
-
 def input_to_dict(input_data):    
     big_dct = defaultdict(dict)
+
     for line in input_data:
         small_dct = {}
 
