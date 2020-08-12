@@ -49,12 +49,12 @@ class TestFunctionality(unittest.TestCase):
     @parameterized.expand(files_provider('tests/cases/', 'incorrect_'))
     def test_incorrect_cases(self, *params):
         input_filename, path = params
-        #expected_filename = input_filename[:-3] + '.out'
         input_path = join(path, input_filename)
-        #expected_path = join(path, expected_filename)
 
         with open(input_path) as input_data:
-            #self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3'))), expected_data.read())
+            with self.assertRaises(SystemExit) as cm:
+                list(a_to_q(input_data, 'U3'))
+            self.assertEqual(cm.exception.code, 1)
 
 
 if __name__ == "__main__":
