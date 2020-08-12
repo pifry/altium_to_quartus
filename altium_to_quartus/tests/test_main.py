@@ -18,10 +18,10 @@ class TestInputArgs(unittest.TestCase):
     ])
     def test_args_parser(self, test_args, input_name, output_name, refdes):
         with patch.object(sys, 'argv', test_args):
-            args = parse_arguments()
-            self.assertEquals(args.input_file, input_name)
-            self.assertEquals(args.output, output_name)
-            self.assertEquals(args.u, refdes)
+            input_file_path, output_file_path, ref_des = parse_arguments()
+            self.assertEquals(input_file_path, input_name)
+            self.assertEquals(output_file_path, output_name)
+            self.assertEquals(ref_des, refdes)
 
 
 def files_provider(path):

@@ -3,33 +3,32 @@ import argparse
 from collections import defaultdict
 
 
-def input_to_dict(input_file):    
-    with open(input_file, "r") as reader:
-        big_dct = defaultdict(dict)
-        for line in reader:
-            small_dct = {}
+def input_to_dict(input_data):    
+    big_dct = defaultdict(dict)
+    for line in input_data:
+        small_dct = {}
 
-            if line.startswith("NODENAME"):
-                lst = list(line.rstrip("\n").rstrip("$").split(" "))
-                lst = list(filter(None, lst))
+        if line.startswith("NODENAME"):
+            lst = list(line.rstrip("\n").rstrip("$").split(" "))
+            lst = list(filter(None, lst))
 
-                components_lst = next(iter(reader)).rstrip("\n").split(" ")
-                components_lst = list(filter(None, components_lst))
-                it = iter(components_lst)
-                components_lst = list(zip(it, it))
-                
-                if lst[1].endswith("_P") or lst[1].endswith("_N"):
-                    big_key = lst[1][:-2].rstrip(".")
-                    small_key = lst[1][-2:]
-                else:
-                    big_key = lst[1]
-                    small_key = "_"
-                small_dct = big_dct[big_key]
-                small_dct[small_key] = components_lst
+            components_lst = next(iter(input_data)).rstrip("\n").split(" ")
+            components_lst = list(filter(None, components_lst))
+            it = iter(components_lst)
+            components_lst = list(zip(it, it))
+            
+            if lst[1].endswith("_P") or lst[1].endswith("_N"):
+                big_key = lst[1][:-2].rstrip(".")
+                small_key = lst[1][-2:]
+            else:
+                big_key = lst[1]
+                small_key = "_"
+            small_dct = big_dct[big_key]
+            small_dct[small_key] = components_lst
     return big_dct
 
 
-def corresponding_line_checker(dct):
+def check_corresponding_line(dct):
     count = 0
     for net, small_dct in dct.items():
         if not "_" in small_dct.keys():
@@ -59,26 +58,25 @@ def extract_net_name(net_name):
     return result
 
 
-def ref_des_writer(dct, u, output_file):
-    with open(output_file, "w+") as writer:
-        for net, small_dct in dct.items():
-            for item, comps in small_dct.items():
-                for (comp, pin) in comps:
-                    if comp == u:
-                        net_ending_digits = extract_net_ending_digits(net)
-                        non_digit_net_name = extract_net_name(net)
-                        if "_" in net or "-" in net or "." in net:
-                            if net_ending_digits != None:
-                                if item == "_N":
-                                    report = report = f"""set_location_assignment PIN_{pin} -to '{non_digit_net_name}[{net_ending_digits}](n)'\n"""
-                                else:
-                                    report = f"""set_location_assignment PIN_{pin} -to '{non_digit_net_name}[{net_ending_digits}]'\n"""
+def generate_output(dct, u):
+    for net, small_dct in dct.items():
+        for item, comps in small_dct.items():
+            for (comp, pin) in comps:
+                if comp == u:
+                    net_ending_digits = extract_net_ending_digits(net)
+                    non_digit_net_name = extract_net_name(net)
+                    if "_" in net or "-" in net or "." in net:
+                        if net_ending_digits != None:
+                            if item == "_N":
+                                report = report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}](n)\"\n"""
                             else:
-                                report = f"""set_location_assignment PIN_{pin} -to '{net}'\n"""
+                                report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}]\"\n"""
                         else:
-                            report = f"""set_location_assignment PIN_{pin} -to '{net}'\n"""
-                        writer.write(report)
-            
+                            report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
+                    else:
+                        report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
+                    yield report
+
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -89,16 +87,18 @@ def parse_arguments():
     args = parser.parse_args()
     if args.output == None:
         args.output = args.input_file.split(".")[0]+".qsf"
+    return (args.input_file, args.output, args.u)
 
-    return args
+def a_to_q(input_data, ref_des):
+    dct = input_to_dict(input_data)
+    check_corresponding_line(dct)
+    for line in generate_output(dct, ref_des):
+        yield line
 
 
-def alt_to_quar():
-    args = parse_arguments()
-    dct = input_to_dict(args.input_file)
-    corresponding_line_checker(dct)
-    ref_des_writer(dct, args.u, args.output)
-
-    
 if __name__ == '__main__':
-    alt_to_quar()
+    input_file_path, output_file_path, ref_des = parse_arguments()
+
+    with open(input_file_path, 'r') as input_file, open(output_file_path,'w') as output_file:
+        for line in a_to_q(input_file, ref_des):
+            output_file.write(line)
