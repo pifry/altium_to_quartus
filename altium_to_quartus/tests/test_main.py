@@ -36,6 +36,12 @@ def files_provider(path, prefix):
 
 class TestFunctionality(unittest.TestCase):
 
+    # Testing correct input files that should produce output file. If you want 
+    # to add such a test, add following pair of fails under cases directory:
+    # correct_<name of the case>.in
+    # correct_<name of the case>.out
+    # The in file should contain correct input data and the out file 
+    # corresponding, expected output data
     @parameterized.expand(files_provider('tests/cases/', 'correct_'))
     def test_correct_cases(self, *params):
         input_filename, path = params
@@ -45,7 +51,10 @@ class TestFunctionality(unittest.TestCase):
 
         with open(input_path) as input_data, open (expected_path) as expected_data:
             self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3'))), expected_data.read())
-        
+
+    # Testing input files that should cause program to exit with non zero code.
+    # If you wand to add such a test, create incorrect input file under cases 
+    # directory and name it starting with incorrect_ prefix and ending with .in.
     @parameterized.expand(files_provider('tests/cases/', 'incorrect_'))
     def test_incorrect_cases(self, *params):
         input_filename, path = params
