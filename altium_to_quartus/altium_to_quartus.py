@@ -25,6 +25,7 @@ def input_to_dict(input_data):
                 small_key = "_"
             small_dct = big_dct[big_key]
             small_dct[small_key] = components_lst
+    #print(big_dct)
     return big_dct
 
 
@@ -68,13 +69,19 @@ def generate_output(dct, u):
                     if "_" in net or "-" in net or "." in net:
                         if net_ending_digits != None:
                             if item == "_N":
-                                report = report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}](n)\"\n"""
+                                report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}](n)\"\n"""
                             else:
                                 report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}]\"\n"""
                         else:
-                            report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
+                            if item == "_N":
+                                report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
+                            else:
+                                report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
                     else:
-                        report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
+                        if item == "_N":
+                                report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
+                        else:
+                            report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
                     yield report
 
 
