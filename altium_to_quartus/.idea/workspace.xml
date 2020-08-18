@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bbb3c6ce-c84c-41ac-be37-7467848e2bca" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/cases/correct_simple1.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/cases/correct_simple1.out" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../requirements/development.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.github/workflows/python-app.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../.github/workflows/python-app.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../requirements/base.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1fuieZjIFbYEPOrGdn2rBEklh7i" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bbb3c6ce-c84c-41ac-be37-7467848e2bca" name="Default Changelist" comment="" />
+      <created>1597074543432</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1597074543432</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="154" y="108" width="1476" height="866" key="MergeDialog" timestamp="1597143979126">
+      <screen x="75" y="34" width="1845" height="1046" />
+    </state>
+    <state x="154" y="108" width="1476" height="866" key="MergeDialog/75.34.1845.1046@75.34.1845.1046" timestamp="1597143979126" />
+    <state x="549" y="377" width="906" height="586" key="MultipleFileMergeDialog" timestamp="1597146827784">
+      <screen x="75" y="34" width="1845" height="1046" />
+    </state>
+    <state x="549" y="377" width="906" height="586" key="MultipleFileMergeDialog/75.34.1845.1046@75.34.1845.1046" timestamp="1597146827784" />
+  </component>
+</project>
