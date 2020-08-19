@@ -96,7 +96,7 @@ def parse_arguments():
         args.output = args.input_file.split(".")[0]+".qsf"
     return (args.input_file, args.output, args.u, args.clc_disabled)
 
-def a_to_q(input_data, ref_des, clc_disabled=False):
+def a_to_q(input_data, ref_des, clc_disabled):
     dct = input_to_dict(input_data)
     if clc_disabled == False:
         check_corresponding_line(dct)
