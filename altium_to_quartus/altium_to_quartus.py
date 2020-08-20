@@ -87,9 +87,9 @@ def generate_output(dct, u):
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", help="reference designator", default="U1")
-    parser.add_argument("-o", "--output", help="output result to a file", default=None)
+    parser.add_argument("-o", "--output", default=None, help="output result to a file")
     parser.add_argument("input_file", help="input file")
-    parser.add_argument("--clc_disabled", help="corresponding line checker disabled", default=False)
+    parser.add_argument("--clc_disabled", default="False", help="corresponding line checker disabled by default")
 
     args = parser.parse_args()
     if args.output == None:
@@ -98,7 +98,7 @@ def parse_arguments():
 
 def a_to_q(input_data, ref_des, clc_disabled):
     dct = input_to_dict(input_data)
-    if clc_disabled == False:
+    if clc_disabled == "False":
         check_corresponding_line(dct)
     for line in generate_output(dct, ref_des):
         yield line
