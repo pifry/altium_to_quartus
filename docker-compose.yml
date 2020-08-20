@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  atoq:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./altium_to_quartus/:/usr/src/app
