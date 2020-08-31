@@ -10,18 +10,20 @@ from os import walk
 class TestInputArgs(unittest.TestCase):
 
     @parameterized.expand([
-        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U3'),
-        (['app_name', '-o', 'output.qsf', '-u', 'U3', 'input.net'], 'input.net', 'output.qsf', 'U3'),
-        (['app_name', 'input.net'], 'input.net', 'input.qsf', 'U1'),
-        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsf', 'U3'),
-        (['app_name', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U1'),
+        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False'),
+        (['app_name', '-o', 'output.qsf', '-u', 'U3', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False'),
+        (['app_name', 'input.net'], 'input.net', 'input.qsf', 'U1', 'False'),
+        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsf', 'U3', 'False'),
+        (['app_name', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U1', 'False'),
+        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net', '--clc_disabled', 'True'], 'input.net', 'output.qsf', 'U3', 'True'),
     ])
-    def test_args_parser(self, test_args, input_name, output_name, refdes):
+    def test_args_parser(self, test_args, input_name, output_name, refdes, clc_d):
         with patch.object(sys, 'argv', test_args):
-            input_file_path, output_file_path, ref_des = parse_arguments()
+            input_file_path, output_file_path, ref_des, clc_disabled = parse_arguments()
             self.assertEquals(input_file_path, input_name)
             self.assertEquals(output_file_path, output_name)
             self.assertEquals(ref_des, refdes)
+            self.assertEquals(clc_disabled, clc_d)
 
 
 def files_provider(path, prefix):
@@ -50,7 +52,7 @@ class TestFunctionality(unittest.TestCase):
         expected_path = join(path, expected_filename)
 
         with open(input_path) as input_data, open (expected_path) as expected_data:
-            self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3'))), expected_data.read())
+            self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3', 'False'))), expected_data.read())
 
     # Testing input files that should cause program to exit with non zero code.
     # If you wand to add such a test, create incorrect input file under cases 
@@ -62,7 +64,7 @@ class TestFunctionality(unittest.TestCase):
 
         with open(input_path) as input_data:
             with self.assertRaises(SystemExit) as cm:
-                list(a_to_q(input_data, 'U3'))
+                list(a_to_q(input_data, 'U3', 'False'))
             self.assertEqual(cm.exception.code, 1)
 
 

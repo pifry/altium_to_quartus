@@ -25,7 +25,6 @@ def input_to_dict(input_data):
                 small_key = "_"
             small_dct = big_dct[big_key]
             small_dct[small_key] = components_lst
-    #print(big_dct)
     return big_dct
 
 
@@ -88,24 +87,26 @@ def generate_output(dct, u):
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", help="reference designator", default="U1")
-    parser.add_argument("-o", "--output", help="output result to a file", default=None)
+    parser.add_argument("-o", "--output", default=None, help="output result to a file")
     parser.add_argument("input_file", help="input file")
+    parser.add_argument("--clc_disabled", default="False", help="corresponding line checker disabled by default")
 
     args = parser.parse_args()
     if args.output == None:
         args.output = args.input_file.split(".")[0]+".qsf"
-    return (args.input_file, args.output, args.u)
+    return (args.input_file, args.output, args.u, args.clc_disabled)
 
-def a_to_q(input_data, ref_des):
+def a_to_q(input_data, ref_des, clc_disabled):
     dct = input_to_dict(input_data)
-    check_corresponding_line(dct)
+    if clc_disabled == "False":
+        check_corresponding_line(dct)
     for line in generate_output(dct, ref_des):
         yield line
 
 
 if __name__ == '__main__':
-    input_file_path, output_file_path, ref_des = parse_arguments()
+    input_file_path, output_file_path, ref_des, clc_disabled = parse_arguments()
 
     with open(input_file_path, 'r') as input_file, open(output_file_path,'w') as output_file:
-        for line in a_to_q(input_file, ref_des):
+        for line in a_to_q(input_file, ref_des, clc_disabled):
             output_file.write(line)
