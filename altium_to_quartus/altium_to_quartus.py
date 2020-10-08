@@ -58,30 +58,31 @@ def extract_net_name(net_name):
     return result
 
 
-def generate_output(dct, u):
+def generate_output(dct, u, filter_string=''):
     for net, small_dct in dct.items():
         for item, comps in small_dct.items():
             for (comp, pin) in comps:
                 if comp == u:
                     net_ending_digits = extract_net_ending_digits(net)
                     non_digit_net_name = extract_net_name(net)
-                    if "_" in net or "-" in net or "." in net:
-                        if net_ending_digits != None:
-                            if item == "_N":
-                                report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}](n)\"\n"""
+                    if net.startswith(filter_string):
+                        if "_" in net or "-" in net or "." in net:
+                            if net_ending_digits != None:
+                                if item == "_N":
+                                    report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}](n)\"\n"""
+                                else:
+                                    report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}]\"\n"""
                             else:
-                                report = f"""set_location_assignment PIN_{pin} -to \"{non_digit_net_name}[{net_ending_digits}]\"\n"""
+                                if item == "_N":
+                                    report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
+                                else:
+                                    report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
                         else:
                             if item == "_N":
-                                report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
+                                    report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
                             else:
                                 report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
-                    else:
-                        if item == "_N":
-                                report = f"""set_location_assignment PIN_{pin} -to \"{net}(n)\"\n"""
-                        else:
-                            report = f"""set_location_assignment PIN_{pin} -to \"{net}\"\n"""
-                    yield report
+                        yield report
 
 
 def parse_arguments():
@@ -90,23 +91,24 @@ def parse_arguments():
     parser.add_argument("-o", "--output", default=None, help="output result to a file")
     parser.add_argument("input_file", help="input file")
     parser.add_argument("--clc_disabled", default="False", help="corresponding line checker disabled by default")
+    parser.add_argument("-f", default='', help="filter string for net names")
 
     args = parser.parse_args()
     if args.output == None:
         args.output = args.input_file.split(".")[0]+".qsf"
-    return (args.input_file, args.output, args.u, args.clc_disabled)
+    return (args.input_file, args.output, args.u, args.clc_disabled, args.f)
 
-def a_to_q(input_data, ref_des, clc_disabled):
+def a_to_q(input_data, ref_des, clc_disabled, filter_string=''):
     dct = input_to_dict(input_data)
     if clc_disabled == "False":
         check_corresponding_line(dct)
-    for line in generate_output(dct, ref_des):
+    for line in generate_output(dct, ref_des, filter_string=filter_string):
         yield line
 
 
 if __name__ == '__main__':
-    input_file_path, output_file_path, ref_des, clc_disabled = parse_arguments()
+    input_file_path, output_file_path, ref_des, clc_disabled, filter_string = parse_arguments()
 
     with open(input_file_path, 'r') as input_file, open(output_file_path,'w') as output_file:
-        for line in a_to_q(input_file, ref_des, clc_disabled):
+        for line in a_to_q(input_file, ref_des, clc_disabled, filter_string=filter_string):
             output_file.write(line)

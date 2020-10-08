@@ -10,20 +10,22 @@ from os import walk
 class TestInputArgs(unittest.TestCase):
 
     @parameterized.expand([
-        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False'),
-        (['app_name', '-o', 'output.qsf', '-u', 'U3', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False'),
-        (['app_name', 'input.net'], 'input.net', 'input.qsf', 'U1', 'False'),
-        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsf', 'U3', 'False'),
-        (['app_name', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U1', 'False'),
-        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net', '--clc_disabled', 'True'], 'input.net', 'output.qsf', 'U3', 'True'),
+        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False', ''),
+        (['app_name', '-o', 'output.qsf', '-u', 'U3', 'input.net'], 'input.net', 'output.qsf', 'U3', 'False', ''),
+        (['app_name', 'input.net'], 'input.net', 'input.qsf', 'U1', 'False', ''),
+        (['app_name', '-u', 'U3', 'input.net'], 'input.net', 'input.qsf', 'U3', 'False', ''),
+        (['app_name', '-o', 'output.qsf', 'input.net'], 'input.net', 'output.qsf', 'U1', 'False', ''),
+        (['app_name', '-u', 'U3', '-o', 'output.qsf', 'input.net', '--clc_disabled', 'True'], 'input.net', 'output.qsf', 'U3', 'True', ''),
+        (['app_name', '-f', 'my_net_name', 'input.net'], 'input.net', 'input.qsf', 'U1', 'False', 'my_net_name'),
     ])
-    def test_args_parser(self, test_args, input_name, output_name, refdes, clc_d):
+    def test_args_parser(self, test_args, input_name, output_name, refdes, clc_d, expected_filter_string):
         with patch.object(sys, 'argv', test_args):
-            input_file_path, output_file_path, ref_des, clc_disabled = parse_arguments()
-            self.assertEquals(input_file_path, input_name)
-            self.assertEquals(output_file_path, output_name)
-            self.assertEquals(ref_des, refdes)
-            self.assertEquals(clc_disabled, clc_d)
+            input_file_path, output_file_path, ref_des, clc_disabled, filter_string = parse_arguments()
+            self.assertEqual(input_file_path, input_name)
+            self.assertEqual(output_file_path, output_name)
+            self.assertEqual(ref_des, refdes)
+            self.assertEqual(clc_disabled, clc_d)
+            self.assertEqual(filter_string, expected_filter_string)
 
 
 def files_provider(path, prefix):
@@ -66,6 +68,16 @@ class TestFunctionality(unittest.TestCase):
             with self.assertRaises(SystemExit) as cm:
                 list(a_to_q(input_data, 'U3', 'False'))
             self.assertEqual(cm.exception.code, 1)
+
+    @parameterized.expand(files_provider('tests/cases/', 'filter_'))
+    def test_filtering(self, *params):
+        input_filename, path = params
+        expected_filename = input_filename[:-3] + '.out'
+        input_path = join(path, input_filename)
+        expected_path = join(path, expected_filename)
+
+        with open(input_path) as input_data, open (expected_path) as expected_data:
+            self.assertMultiLineEqual("".join(list(a_to_q(input_data, 'U3', 'False', "SIMPLE_"))), expected_data.read())
 
 
 if __name__ == "__main__":
